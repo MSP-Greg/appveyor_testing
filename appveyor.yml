@@ -17,9 +17,11 @@ install:
 #  - ps: gem install rake -v ">= 20.0" && exit 0
   
   - set PATH=C:/ruby21/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-  - ps: gem install rake -v ">= 20.0" && exit 0
+  - ps: |
+    ruby -v
+    gem -v
+    gem install rake -v ">= 20.0"
+    exit 0
 
   - set PATH=C:/ruby21-x64/bin;%BASE_PATH%
   - ruby -v
