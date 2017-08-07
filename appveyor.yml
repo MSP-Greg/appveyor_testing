@@ -9,44 +9,44 @@ install:
   - set PATH=C:/ruby200/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-#  - gem install rake -v ">= 20.0"
+#  - gem install rake -v ">= 20.0" && exit 0
 
   - set PATH=C:/ruby200-x64/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-#  - gem install rake -v ">= 20.0"
+#  - gem install rake -v ">= 20.0" && exit 0
   
   - set PATH=C:/ruby21/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-  - gem install rake -v ">= 20.0"
+  - gem install rake -v ">= 20.0" && exit 0
 
   - set PATH=C:/ruby21-x64/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-  - gem install rake -v ">= 20.0"
+  - gem install rake -v ">= 20.0" && exit 0
   
   - set PATH=C:/ruby22/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-  - gem install rake -v ">= 20.0"
+  - gem install rake -v ">= 20.0" && exit 0
 
   - set PATH=C:/ruby22-x64/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-  - gem install rake -v ">= 20.0"
+  - gem install rake -v ">= 20.0" && exit 0
 
   - set PATH=C:/ruby23/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-  - gem install rake -v ">= 20.0"
+  - gem install rake -v ">= 20.0" && exit 0
 
   - set PATH=C:/ruby23-x64/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-  - gem install rake -v ">= 20.0"
+  - gem install rake -v ">= 20.0" && exit 0
 
   - set PATH=C:/ruby24-x64/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-  - gem install rake -v ">= 20.0"
+  - gem install rake -v ">= 20.0" && exit 0
