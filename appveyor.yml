@@ -25,12 +25,12 @@ init:
   - set PATH=C:/ruby22/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-  - gem install rake -v '>= 20.0'
+#  - gem install rake -v '>= 20.0'
 
   - set PATH=C:/ruby22-x64/bin;%BASE_PATH%
   - ruby -v
   - gem -v
-  - gem install rake -v '>= 20.0'
+#  - gem install rake -v '>= 20.0'
 
   - set PATH=C:/ruby23/bin;%BASE_PATH%
   - ruby -v
