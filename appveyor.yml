@@ -1,0 +1,41 @@
+init:
+  - mklink /d C:\git "C:\Program Files\Git"
+  - set BASE_PATH=C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/msys64/usr/bin;C:/Windows/system32;C:\Windows;
+  - set PATH=C:/ruby200/bin;%BASE_PATH%
+  - ruby -v
+  - gem install rake -v '>= 50.0'
+
+  - set PATH=C:/ruby200-x64/bin;%BASE_PATH%
+  - ruby -v
+  - gem install rake -v '>= 50.0'
+  
+  - set PATH=C:/ruby21/bin;%BASE_PATH%
+  - ruby -v
+  - gem install rake -v '>= 50.0'
+
+  - set PATH=C:/ruby21-x64/bin;%BASE_PATH%
+  - ruby -v
+  - gem install rake -v '>= 50.0'
+  
+  - set PATH=C:/ruby22/bin;%BASE_PATH%
+  - ruby -v
+  - gem install rake -v '>= 50.0'
+
+  - set PATH=C:/ruby22-x64/bin;%BASE_PATH%
+  - ruby -v
+  - gem install rake -v '>= 50.0'
+
+  - set PATH=C:/ruby23/bin;%BASE_PATH%
+  - ruby -v
+  - gem install rake -v '>= 50.0'
+
+  - set PATH=C:/ruby23-x64/bin;%BASE_PATH%
+  - ruby -v
+  - gem install rake -v '>= 50.0'
+
+  - set PATH=C:/ruby24-x64/bin;%BASE_PATH%
+  - ruby -v
+  - gem install rake -v '>= 50.0'
+
+build: off
+deploy: off
