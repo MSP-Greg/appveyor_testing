@@ -1,8 +1,11 @@
+build:  off
+deploy: off
+
 init:
   - mklink /d C:\git "C:\Program Files\Git"
   - set BASE_PATH=C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/msys64/usr/bin;C:/Windows/system32;C:\Windows;
 
-build:
+install:
   - set PATH=C:/ruby200/bin;%BASE_PATH%
   - ruby -v
   - gem -v
@@ -47,5 +50,3 @@ build:
   - ruby -v
   - gem -v
   - gem install rake -v '>= 20.0'
-
-deploy: off
