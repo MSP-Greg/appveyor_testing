@@ -1,59 +1,20 @@
 build:  off
 deploy: off
 
-init:
+test_script:
   - mklink /d C:\git "C:\Program Files\Git"
-  - set BASE_PATH=C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/msys64/usr/bin;C:/Windows/system32;C:\Windows;
+  - set base_path=C:/msys64/usr/bin;C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/Windows/system32
 
-install:
-  - set PATH=C:/ruby200/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-    gem install rake -v ">= 20.0" & exit 0
+  - set PATH=C:/ruby24-x64/bin;%base_path%
+  - appveyor DownloadFile https://dl.bintray.com/msp-greg/ruby_windows/ruby_trunk_32.7z -FileName C:\ruby_trunk_32.7z &
+      7z x C:\ruby_trunk_32.7z -oC:\ruby_trunk_32 & C:\ruby_trunk_32\trunk_install_32.cmd )
+  - set PATH=C:/ruby_trunk_32/bin;%base_path% & cd \projects\appveyor-testing\test
+  - echo ----------------------------------------------------------------------------- trunk_32 openssl test
+  - ruby --disable-gems -v runner.rb -I. -I./lib -v --show-skip openssl
 
-  - set PATH=C:/ruby200-x64/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-    gem install rake -v ">= 20.0" & exit 0
-  
-  - set PATH=C:/ruby21/bin;%BASE_PATH%
-  - ruby -v
-    @gem -v
-    gem install rake -v ">= 20.0" & exit 0
-
-  - set PATH=C:/ruby21-x64/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-  - gem install rake -v ">= 20.0" & exit 0
-  
-  - set PATH=C:/ruby22/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-  - gem install rake -v ">= 20.0" & exit 0
-
-  - set PATH=C:/ruby22-x64/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-  - gem install rake -v ">= 20.0" & exit 0
-
-  - set PATH=C:/ruby23/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-  - gem install rake -v ">= 20.0" & exit 0
-
-  - set PATH=C:/ruby23-x64/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-  - gem install rake -v ">= 20.0" & exit 0
-
-  - set PATH=C:/ruby24-x64/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-  - gem install rake -v ">= 20.0" & exit 0
-
+  - set PATH=C:/ruby24-x64/bin;%base_path%
   - appveyor DownloadFile https://dl.bintray.com/msp-greg/ruby_windows/ruby_trunk.7z -FileName C:\ruby_trunk.7z &
       7z x C:\ruby_trunk.7z -oC:\ruby_trunk & C:\ruby_trunk\trunk_install.cmd )
-  - set PATH=C:/ruby_trunk/bin;%BASE_PATH%
-  - ruby -v
-  - gem -v
-  - gem install rake -v ">= 20.0" & exit 0
+  - set PATH=C:/ruby_trunk/bin;%base_path% & cd \projects\appveyor-testing\test
+  - echo ----------------------------------------------------------------------------- trunk_64 openssl test
+  - ruby --disable-gems -v runner.rb -I. -I./lib -v --show-skip openssl
