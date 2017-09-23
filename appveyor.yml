@@ -2,19 +2,26 @@ build:  off
 deploy: off
 
 test_script:
+  # Remove any ENV settings related to OpenSSL-Win
+  - set SSL_CERT_DIR=
+  - set SSL_CERT_FILE=
+  - set OPENSSL_CONF=
+  - set OPENSSL_DIR=
+
+  # Set up minimum path required
   - mklink /d C:\git "C:\Program Files\Git"
-  - set base_path=C:/msys64/usr/bin;C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/Windows/system32
+  - set base_path=C:/msys64/usr/bin;C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/Windows/system32;C:/Windows;C:/Program Files
 
-  - set PATH=C:/ruby24-x64/bin;%base_path%
-  - appveyor DownloadFile https://dl.bintray.com/msp-greg/ruby_windows/ruby_trunk_32.7z -FileName C:\ruby_trunk_32.7z &
-      7z x C:\ruby_trunk_32.7z -oC:\ruby_trunk_32 & C:\ruby_trunk_32\trunk_install_32.cmd )
-  - set PATH=C:/ruby_trunk_32/bin;%base_path% & cd \projects\appveyor-testing\test
+  # Download and install latest ruby trunk build
+  - appveyor DownloadFile https://ci.appveyor.com/project/MSP-Greg/ruby-loco//artifacts/master/latest_successful/ruby_trunk.7z -FileName C:\ruby_trunk.7z
+  - 7z x C:/ruby_trunk.7z -oC:/ruby_trunk
+  
+  # Download ruby so tests can be run
+  - git clone -q --depth=5 --no-tags --branch=trunk https://github.com/ruby/ruby.git  C:\ruby_src
+  
+  - set PATH=C:/ruby_trunk/bin;%base_path%
+  
+  - cd C:\ruby_src\tests
   - echo ----------------------------------------------------------------------------- trunk_32 openssl test
-  - ruby --disable-gems -v runner.rb -I. -I./lib -v --show-skip openssl
-
-  - set PATH=C:/ruby24-x64/bin;%base_path%
-  - appveyor DownloadFile https://dl.bintray.com/msp-greg/ruby_windows/ruby_trunk.7z -FileName C:\ruby_trunk.7z &
-      7z x C:\ruby_trunk.7z -oC:\ruby_trunk & C:\ruby_trunk\trunk_install.cmd )
-  - set PATH=C:/ruby_trunk/bin;%base_path% & cd \projects\appveyor-testing\test
-  - echo ----------------------------------------------------------------------------- trunk_64 openssl test
-  - ruby --disable-gems -v runner.rb -I. -I./lib -v --show-skip openssl
+  - ruby --disable-gems -v runner.rb -I. --show-skip openssl
+  - ruby --disable-gems -v runner.rb -I. --repeat-count=50 openssl/test_engine.rb -ntest_openssl_engine_cipher_rc4
