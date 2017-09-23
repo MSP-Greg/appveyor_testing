@@ -14,7 +14,7 @@ test_script:
 
   # Download and install latest ruby trunk build
   - md C:\pkgs
-  - appveyor DownloadFile https://ci.appveyor.com/project/MSP-Greg/ruby-loco//artifacts/master/latest_successful/ruby_trunk.7z -FileName C:/pkgs/ruby_trunk.7z
+  - appveyor DownloadFile https://ci.appveyor.com/project/MSP-Greg/ruby-loco/artifacts/latest_successful/ruby_trunk.7z -FileName C:/pkgs/ruby_trunk.7z
   - 7z x C:/pkgs/ruby_trunk.7z -oC:/ruby_trunk
   
   # Download ruby so tests can be run
