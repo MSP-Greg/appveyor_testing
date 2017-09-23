@@ -22,7 +22,8 @@ test_script:
   
   - set PATH=C:/ruby_trunk/bin;%base_path%
   
-  - cd C:\ruby_src\tests
-  - echo ----------------------------------------------------------------------------- trunk_32 openssl test
+  - cd C:\ruby_src\test
+  - echo ----------------------------------------------------------------------------- trunk openssl test
   - ruby --disable-gems -v runner.rb -I. --show-skip openssl
+  - echo ----------------------------------------------------------------------------- trunk test_openssl_engine_cipher_rc4
   - ruby --disable-gems -v runner.rb -I. --repeat-count=50 openssl/test_engine.rb -ntest_openssl_engine_cipher_rc4
