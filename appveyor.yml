@@ -14,7 +14,7 @@ test_script:
   - set PATH=C:/ruby24-x64/bin;%base_path%  & ruby test.rb
   - set PATH=C:/ruby_trunk/bin;%base_path%  & ruby test.rb
 
-  - @echo --------------------------------------------------------------------- Set all OpenSSL ENV to nil
+  - echo --------------------------------------------------------------------- Set all OpenSSL ENV to nil
 
   - set SSL_CERT_DIR=
   - set SSL_CERT_FILE=
@@ -28,7 +28,7 @@ test_script:
   - set PATH=C:/ruby24-x64/bin;%base_path%  & ruby test.rb
   - set PATH=C:/ruby_trunk/bin;%base_path%  & ruby test.rb
 
-  - @echo --------------------------------------------------------------------- Set SSL_CERT_FILE
+  - echo --------------------------------------------------------------------- Set SSL_CERT_FILE
   
   - set SSL_CERT_FILE=C:/ruby24-x64/ssl/cert.pem
 
