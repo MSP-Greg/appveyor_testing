@@ -1,0 +1,29 @@
+build:  off
+deploy: off
+
+test_script:
+  # Remove any ENV settings related to OpenSSL-Win
+  - set SSL_CERT_DIR=
+  - set SSL_CERT_FILE=
+  - set OPENSSL_CONF=
+  - set OPENSSL_DIR=
+
+  # Set up minimum path required
+  - mklink /d C:\git "C:\Program Files\Git"
+  - set base_path=C:/msys64/usr/bin;C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/Windows/system32;C:/Windows;C:/Program Files
+
+  # Download and install latest ruby trunk build
+  - md C:\pkgs
+  - appveyor DownloadFile https://ci.appveyor.com/api/projects/MSP-Greg/ruby-loco/artifacts/ruby_trunk.7z -FileName C:/pkgs/ruby_trunk.7z
+  - 7z x C:/pkgs/ruby_trunk.7z -oC:/ruby_trunk
+  
+  # Download ruby so tests can be run
+  - git clone -q --depth=5 --no-tags --branch=trunk https://github.com/ruby/ruby.git  C:\ruby_src
+  
+  - set PATH=C:/ruby_trunk/bin;%base_path%
+  
+  - cd C:\ruby_src\test
+  - @echo ----------------------------------------------------------------------------- trunk openssl test
+  - ruby --disable-gems -v runner.rb -I. --show-skip openssl
+  - @echo ----------------------------------------------------------------------------- trunk test_openssl_engine_cipher_rc4
+  - ruby --disable-gems -v runner.rb -I. --repeat-count=50 openssl/test_engine.rb -ntest_openssl_engine_cipher_rc4
