@@ -1,0 +1,42 @@
+build: off
+deploy: off
+
+test_script:
+  - set base_path=C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Program Files/Git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/Windows/system32;C:/Windows
+
+  - appveyor DownloadFile https://ci.appveyor.com/api/projects/MSP-Greg/ruby-loco/artifacts/ruby_trunk.7z -FileName C:/ruby_trunk.7z
+  - 7z x C:/ruby_trunk.7z -oC:/ruby_trunk
+
+  - echo off
+  - set PATH=C:/ruby200-x64/bin;%base_path% & ruby test.rb
+  - set PATH=C:/ruby21-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby22-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby23-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby24-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby_trunk/bin;%base_path%  & ruby test.rb
+
+  - echo --------------------------------------------------------------------- Set all OpenSSL ENV to nil
+
+  - set SSL_CERT_DIR=
+  - set SSL_CERT_FILE=
+  - set OPENSSL_CONF=
+  - set OPENSSL_DIR=
+
+  - set PATH=C:/ruby200-x64/bin;%base_path% & ruby test.rb
+  - set PATH=C:/ruby21-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby22-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby23-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby24-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby_trunk/bin;%base_path%  & ruby test.rb
+
+  - echo --------------------------------------------------------------------- Set SSL_CERT_FILE
+  
+  - set SSL_CERT_FILE=C:/ruby24-x64/ssl/cert.pem
+
+  - set PATH=C:/ruby200-x64/bin;%base_path% & ruby test.rb
+  - set PATH=C:/ruby21-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby22-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby23-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby23-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby24-x64/bin;%base_path%  & ruby test.rb
+  - set PATH=C:/ruby_trunk/bin;%base_path%  & ruby test.rb
