@@ -14,5 +14,7 @@ Total Failures/Errors 0
 ruby 2.5.0dev (2017-09-26 trunk 60035) [x64-mingw32]
 INDENTED_HEREDOC
 
+s = "<code>#{s.gsub(/\n/, "<br/>")}</code>"
+
 `appveyor AddMessage \"#{s}\"`
 exit 0
