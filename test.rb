@@ -15,4 +15,5 @@ ruby 2.5.0dev (2017-09-26 trunk 60035) [x64-mingw32]
 INDENTED_HEREDOC
 
 `appveyor AddMessage -Message \"Test Results\" -Details \"#{s}\"`
+`appveyor UpdateBuild -Message \"#{RUBY_DESCRIPTION}\"`
 exit 0
