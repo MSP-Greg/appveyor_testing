@@ -19,4 +19,4 @@ test_script:
   - set PATH=C:/ruby24-x64/bin;%base_path%  & ruby -rdevkit devkit_path.rb
   - set PATH=C:/ruby_trunk/bin;%base_path%  & ruby -rdevkit devkit_path.rb
 
-  appveyor UpdateBuild -Message "DevKit Path"
+  - appveyor UpdateBuild -Message "DevKit Path"
