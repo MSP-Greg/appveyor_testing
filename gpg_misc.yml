@@ -1,0 +1,21 @@
+build: off
+deploy: off
+
+test_script:
+  - set BASE_PATH=C:\Program Files\7-Zip;C:\Program Files\AppVeyor\BuildAgent;C:\Program Files\Git\cmd;C:\Windows\system32;C:\Program Files;C:\Windows
+  - PATH=%BASE_PATH%;C:\msys64\usr\bin
+  - gpg.exe  --keyserver na.pool.sks-keyservers.net --recv-keys BE8BF1C5
+
+  # RUBY_OTHER is used to test CLI commands
+  - set RUBY_OTHER=C:\ruby23-x64
+  - set RI2_VERS=rubyinstaller-2.4.2-2
+  - set RUBY_VERS_BASE=rubyinstaller-2.4.2-2
+
+  - set RBIT=x86
+  - set RDIR=ruby24
+  - call new_ruby.cmd
+
+  - PATH=%BASE_PATH%;C:\msys64\usr\bin
+  - set RBIT=x64
+  - set RDIR=ruby24-x64
+  - call new_ruby.cmd
