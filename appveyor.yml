@@ -10,8 +10,8 @@ test_script:
 
   # Set up minimum path required
   - mklink /d C:\git "C:\Program Files\Git"
-  - set base_path=C:/msys64/usr/bin;C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/Windows/system32;C:/Windows;C:/Program Files
-
+  - set base_path=C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/Windows/system32;C:/Windows;C:/Program Files
+  - rem set base_path=C:/msys64/usr/bin;%BASE_PATH%
   # Download and install latest ruby trunk build
   - md C:\pkgs
   - appveyor DownloadFile https://ci.appveyor.com/api/projects/MSP-Greg/ruby-loco/artifacts/ruby_trunk.7z -FileName C:/pkgs/ruby_trunk.7z
@@ -21,11 +21,13 @@ test_script:
   - git clone -q --depth=5 --no-tags --branch=trunk https://github.com/ruby/ruby.git  C:\ruby_src
   
   - set PATH=C:/ruby_trunk/bin;%base_path%
-  
+  - set OSSL_TEST_ALL=1
+  - cd C:\ruby_src
+  - C:\msys64\usr\bin\patch  -p1 -N --no-backup-if-mismatch -i C:\projects\testing-appveyor\test-lib.patch
   - cd C:\ruby_src\test
   - rem ——————————————————————————————————————————————————————————————————————————————— 
   - ruby -ropenssl -e 'puts "OPENSSL_VERSION          " + OpenSSL::OPENSSL_VERSION + "\nOPENSSL_LIBRARY_VERSION  " + OpenSSL::OPENSSL_LIBRARY_VERSION'
   - rem ——————————————————————————————————————————————————————— trunk openssl test no j
-  - ruby -v --disable-gems runner.rb -v -I./lib openssl
+  - ruby --disable-gems runner.rb -I./lib --show-skip openssl
   - rem ——————————————————————————————————————————————————————— trunk openssl test -j2
-  - ruby -v --disable-gems runner.rb -v -I./lib --show-skip -j2 --job-status=normal openssl
+  - ruby --disable-gems runner.rb -I./lib --show-skip -j2 --job-status=normal --retry openssl
