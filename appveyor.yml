@@ -22,12 +22,15 @@ test_script:
   
   - set PATH=C:/ruby_trunk/bin;%base_path%
   - set OSSL_TEST_ALL=1
+  - set J_RUN=--show-skip -I./lib  -j3 --job-status=normal --subprocess-timeout-scale=1.5 --retry
+  - set  J_NO=--show-skip -I./lib
+
   - cd C:\ruby_src
   - C:\msys64\usr\bin\patch  -p1 -N --no-backup-if-mismatch -i C:\projects\testing-appveyor\test-lib.patch
   - cd C:\ruby_src\test
   - rem ——————————————————————————————————————————————————————————————————————————————— 
   - ruby -ropenssl -e 'puts "OPENSSL_VERSION          " + OpenSSL::OPENSSL_VERSION + "\nOPENSSL_LIBRARY_VERSION  " + OpenSSL::OPENSSL_LIBRARY_VERSION'
   - rem ——————————————————————————————————————————————————————— trunk openssl test no j
-  - ruby --disable-gems runner.rb -I./lib --show-skip openssl
+  - ruby -v --disable-gems runner.rb %J_NO%  --repeat-count=20 openssl/test_ssl_session.rb -ntest_ctx_server_session_cb
   - rem ——————————————————————————————————————————————————————— trunk openssl test -j2
-  - ruby --disable-gems runner.rb -I./lib --show-skip -j2 --job-status=normal --retry openssl
+  - ruby -v --disable-gems runner.rb %J_RUN% --repeat-count=20 openssl/test_ssl_session.rb -ntest_ctx_server_session_cb
