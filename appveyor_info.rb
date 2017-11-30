@@ -1,9 +1,12 @@
-require "rbconfig"
+# frozen_string_literal: true
+
+# Copyright (C) 2017 MSP-Greg
+
+require "rbconfig" unless defined? RbConfig
 
 module VersInfo
-  @@col_wid = [34, 14, 17, 26, 10, 16]
-
-  @@dash = 8212.chr(Encoding::UTF_8)
+  COL_WID = [34, 14, 17, 26, 10, 16]
+  DASH = 8212.chr(Encoding::UTF_8)
 
   class << self
 
@@ -14,7 +17,7 @@ module VersInfo
         `appveyor UpdateBuild -Message \"#{title}\"`
       end
 
-      puts " #{Time.now.getutc}     Appveyor Ruby #{RUBY_VERSION}".rjust(110, @@dash)
+      puts " #{Time.now.getutc}     Appveyor Ruby #{RUBY_VERSION}".rjust(110, DASH)
       puts
       puts RUBY_DESCRIPTION
       puts
@@ -56,23 +59,24 @@ module VersInfo
       first('readline', "Readline::VERSION (#{@rl_type})", 3) { Readline::VERSION }
       double('zlib', 'Zlib::VERSION', 'ZLIB_VERSION', 3, 1, 2) { [Zlib::VERSION, Zlib::ZLIB_VERSION] }
 
-      if const_defined?(:Integer) &&  Integer.const_defined?(:GMP_VERSION)
-        puts "#{'Integer::GMP_VERSION'.ljust(@@col_wid[3])}#{Integer::GMP_VERSION}"
+      if const_defined?(:Integer)
+        puts Integer.const_defined?(:GMP_VERSION) ?
+          "#{'Integer::GMP_VERSION'.ljust(COL_WID[3])}#{Integer::GMP_VERSION}" :
+          "#{'Integer::GMP_VERSION'.ljust(COL_WID[3])}Unknown"
       elsif const_defined?(:Bignum)
-        if Bignum.const_defined?(:GMP_VERSION)
-          puts "#{'Bignum::GMP_VERSION'.ljust( @@col_wid[3])}#{Bignum::GMP_VERSION}"
-        else
-          puts "#{'Bignum::GMP_VERSION'.ljust( @@col_wid[3])}Unknown"
-        end
+        puts Bignum.const_defined?(:GMP_VERSION) ?
+          "#{'Bignum::GMP_VERSION'.ljust( COL_WID[3])}#{Bignum::GMP_VERSION}" :
+          "#{'Bignum::GMP_VERSION'.ljust( COL_WID[3])}Unknown"
       end
-      puts "\n#{@@dash * 56} Load Test"
+
+      puts "\n#{DASH * 56} Load Test"
       loads2?('dbm'     , 'DBM'     , 'socket'        , 'Socket'         , 4)
       loads2?('digest'  , 'Digest'  , 'win32/registry', 'Win32::Registry', 4)
       loads2?('fiddle'  , 'Fiddle'  , 'win32ole'      , 'WIN32OLE'       , 4)
       loads1?('zlib'    , 'Zlib', 4, chk_rake(4))
 
       gem_list
-      puts "\n#{@@dash * 110}"
+      puts "\n#{DASH * 110}"
     end
 
   private
@@ -94,27 +98,27 @@ module VersInfo
         ret = stdout.read.strip
       }
       if /\d+\.\d+\.\d+/ =~ ret
-        "#{'Rake CLI'.ljust(@@col_wid[idx])}  Ok".ljust(@@col_wid[0])
+        "#{'Rake CLI'.ljust(COL_WID[idx])}  Ok".ljust(COL_WID[0])
       else
-        "#{'Rake CLI'.ljust(@@col_wid[idx])}  Does not load!".ljust(@@col_wid[0])
+        "#{'Rake CLI'.ljust(COL_WID[idx])}  Does not load!".ljust(COL_WID[0])
       end
     rescue
-      "#{'Rake CLI'.ljust(@@col_wid[idx])}  Does not load!".ljust(@@col_wid[0])
+      "#{'Rake CLI'.ljust(COL_WID[idx])}  Does not load!".ljust(COL_WID[0])
     end
     
     def loads1?(req, str, idx, pref = nil)
       begin
         require req
         if pref
-          puts "#{pref}#{str.ljust(@@col_wid[idx+1])}  Ok"
+          puts "#{pref}#{str.ljust(COL_WID[idx+1])}  Ok"
         else
-          puts "#{str.ljust(@@col_wid[idx])}  Ok"
+          puts "#{str.ljust(COL_WID[idx])}  Ok"
         end
       rescue LoadError
         if pref
-          puts "#{pref}#{str.ljust(@@col_wid[idx]+1)}  Does not load!"
+          puts "#{pref}#{str.ljust(COL_WID[idx]+1)}  Does not load!"
         else
-          puts "#{str.ljust(@@col_wid[idx])}  Does not load!"
+          puts "#{str.ljust(COL_WID[idx])}  Does not load!"
         end
       end
     end
@@ -122,20 +126,20 @@ module VersInfo
     def loads2?(req1, str1, req2, str2, idx)
       begin
         require req1
-        str = "#{str1.ljust(@@col_wid[idx])}  Ok".ljust(@@col_wid[0])
+        str = "#{str1.ljust(COL_WID[idx])}  Ok".ljust(COL_WID[0])
       rescue LoadError
-        str = "#{str1.ljust(@@col_wid[idx])}  Does not load!".ljust(@@col_wid[0])
+        str = "#{str1.ljust(COL_WID[idx])}  Does not load!".ljust(COL_WID[0])
       end
       begin
         require req2
-        puts str + "#{str2.ljust(@@col_wid[idx+1])}  Ok"
+        puts str + "#{str2.ljust(COL_WID[idx+1])}  Ok"
       rescue LoadError
-        puts str + "#{str2.ljust(@@col_wid[idx+1])}  Does not load!"
+        puts str + "#{str2.ljust(COL_WID[idx+1])}  Does not load!"
       end
     end
 
     def first(req, text, idx)
-      col = idx > 10 ? idx : @@col_wid[idx]
+      col = idx > 10 ? idx : COL_WID[idx]
       require req
       puts "#{text.ljust(col)}#{yield}"
       true
@@ -146,7 +150,7 @@ module VersInfo
 
     def additional(text, idx, indent = 0)
       fn = yield
-      puts "#{(' ' * indent + text).ljust(@@col_wid[idx])}#{fn}"
+      puts "#{(' ' * indent + text).ljust(COL_WID[idx])}#{fn}"
     rescue LoadError
     end
 
@@ -163,7 +167,7 @@ module VersInfo
           "#{'Dir  Exists'.ljust(23)}#{fn}" :
           "#{'Dir  Not Found!'.ljust(23)}Unknown path or file"
       end
-      puts "#{(' ' * indent + text).ljust(@@col_wid[idx])}#{found}"
+      puts "#{(' ' * indent + text).ljust(COL_WID[idx])}#{found}"
     rescue LoadError
     end
 
@@ -182,10 +186,10 @@ module VersInfo
     def double(req, text1, text2, idx1, idx2, idx3)
       require req
       val1, val2 = yield
-      puts "#{text1.ljust(@@col_wid[idx1])}#{val1.ljust(@@col_wid[idx2])}" \
-           "#{text2.ljust(@@col_wid[idx3])}#{val2}"
+      puts "#{text1.ljust(COL_WID[idx1])}#{val1.ljust(COL_WID[idx2])}" \
+           "#{text2.ljust(COL_WID[idx3])}#{val2}"
     rescue LoadError
-      puts "#{text1.ljust(@@col_wid[idx1])}NOT FOUND!"
+      puts "#{text1.ljust(COL_WID[idx1])}NOT FOUND!"
     end
 
     def gem_list
@@ -199,22 +203,22 @@ module VersInfo
       ret = sio_out.string
       cmd.ui = orig_ui
       ary_bundled = ret.split(/\r*\n/)
-      puts "\n#{@@dash * 12} #{"Default Gems #{@@dash * 5}".ljust(30)} #{@@dash * 12} Bundled Gems #{@@dash * 4}"
+      puts "\n#{DASH * 18} #{"Default Gems #{DASH * 5}".ljust(30)} #{DASH * 18} Bundled Gems #{DASH * 4}"
       ary_bundled.reject! { |i| /^[a-z]/ !~ i }
-      ary_default = ary_bundled.select { |i| /\(default:/ =~ i }
-      ary_bundled.reject! { |i| /\(default:/ =~ i }
+      ary_default = ary_bundled.select { |i| /default: / =~ i }
+      ary_bundled.reject! { |i| /default: / =~ i }
 
-      ary_default.map! { |i| i.gsub(/\(default: |\)/, '') }
-      ary_bundled.map! { |i| i.gsub(/[()]/, '') }
+      ary_default.map! { |i| i.gsub(/\)|default: /, '') }
+      ary_bundled.map! { |i| i.gsub(/\)/, '') }
 
       max_rows = [ary_default.length || 0, ary_bundled.length || 0].max
       (0..(max_rows-1)).each { |i|
-        dflt  = ary_default[i] ? ary_default[i].split(" ") : ["", ""]
-        bndl  = ary_bundled[i] ? ary_bundled[i].split(" ") : nil
+        dflt  = ary_default[i] ? ary_default[i].split(" (") : ["", ""]
+        bndl  = ary_bundled[i] ? ary_bundled[i].split(" (") : nil
         if bndl
-          puts "#{dflt[1].rjust(12)} #{dflt[0].ljust(30)} #{bndl[1].rjust(12)} #{bndl[0]}"
+          puts "#{dflt[1].rjust(18)} #{dflt[0].ljust(30)} #{bndl[1].rjust(18)} #{bndl[0]}"
         else
-          puts "#{dflt[1].rjust(12)} #{dflt[0]}"
+          puts "#{dflt[1].rjust(18)} #{dflt[0]}"
         end
       }
     ensure
@@ -227,24 +231,24 @@ module VersInfo
 
     def ssl_methods
       ssl = OpenSSL::SSL
-      if OpenSSL::VERSION <= '2.0.9'
+      if OpenSSL::VERSION < '2.1'
         additional('SSLContext::METHODS', 0, 4) {
           ssl::SSLContext::METHODS.reject { |e| /client|server/ =~ e }.sort.join(' ')
         }
       else
         additional('SSLContext versions', 0, 4) {
           ctx = OpenSSL::SSL::SSLContext.new
-          if  ctx.respond_to? :min_version=
+          if ctx.respond_to? :min_version=
             ssl_methods = []
             all_ssl_meths =
-            [ [ssl::SSL2_VERSION  , 'SSLv2'  ],
-              [ssl::SSL3_VERSION  , 'SSLv3'  ],
-              [ssl::TLS1_VERSION  , 'TLSv1'  ],
-              [ssl::TLS1_1_VERSION, 'TLSv1_1'],
-              [ssl::TLS1_2_VERSION, 'TLSv1_2']
+            [ [ssl::SSL2_VERSION  , 'SSL2'  ],
+              [ssl::SSL3_VERSION  , 'SSL3'  ],
+              [ssl::TLS1_VERSION  , 'TLS1'  ],
+              [ssl::TLS1_1_VERSION, 'TLS1_1'],
+              [ssl::TLS1_2_VERSION, 'TLS1_2']
             ]
             if defined? ssl::TLS1_3_VERSION
-              all_ssl_meths << [ssl::TLS1_3_VERSION, 'TLSv1_3']
+              all_ssl_meths << [ssl::TLS1_3_VERSION, 'TLS1_3']
             end
             all_ssl_meths.each { |m|
               begin
