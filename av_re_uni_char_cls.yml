@@ -1,0 +1,12 @@
+build: off
+deploy: off
+
+test_script:
+  - set base_path=C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Program Files/Git/cmd;C:/Windows/system32;C:/Windows;"C:/Program Files (x86)/GNU/GnuPG/pub"
+
+  - appveyor DownloadFile https://ci.appveyor.com/api/projects/MSP-Greg/ruby-loco/artifacts/ruby_trunk.7z -FileName C:/ruby_trunk.7z
+  - 7z x C:/ruby_trunk.7z -oC:/ruby_trunk
+
+  - appveyor UpdateBuild -Message "Regexp Unicode Character Classes"
+  - ruby_loop re_uni_char_cls.rb
+  # ruby_loop av_devkit_info.rb
