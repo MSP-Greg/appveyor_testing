@@ -2,7 +2,6 @@ build: off
 deploy: off
 
 test_script:
-  - where ragel.exe
   - C:\msys64\usr\bin\pacman.exe --noconfirm -S mingw-w64-i686-ragel
   - C:\msys64\usr\bin\pacman.exe --noconfirm -S mingw-w64-x86_64-ragel
   - where ragel.exe
