@@ -8,6 +8,7 @@ test_script:
 - 7z x C:/ruby_trunk.7z -oC:/ruby_trunk
 
 - echo off
+- ruby_version: 200-x64
 - set PATH=C:/ruby200-x64/bin;%base_path%
 - ps: >-
     if (($env:ruby_version -lt '25') {
@@ -22,7 +23,7 @@ test_script:
       gem --version
     }
 
-
+- ruby_version: 21-x64
 - set PATH=C:/ruby21-x64/bin;%base_path%
 - ps: >-
     if (($env:ruby_version -lt '25') {
@@ -37,6 +38,7 @@ test_script:
       gem --version
     }
 
+- ruby_version: 22-x64
 - set PATH=C:/ruby22-x64/bin;%base_path%
 - ps: >-
     if (($env:ruby_version -lt '25') {
@@ -51,6 +53,7 @@ test_script:
       gem --version
     }
 
+- ruby_version: 23-x64
 - set PATH=C:/ruby23-x64/bin;%base_path%
 - ps: >-
     if (($env:ruby_version -lt '25') {
@@ -64,3 +67,19 @@ test_script:
       Pop-Location
       gem --version
     }
+    
+- ruby_version: 24-x64
+- set PATH=C:/ruby24-x64/bin;%base_path%
+- ps: >-
+    if (($env:ruby_version -lt '25') {
+      gem uninstall bundler
+      Push-Location C:\
+      gem fetch rubygems-update -v2.7.7
+      gem unpack  rubygems-update-2.7.7.gem
+      Push-Location C:\rubygems-update-2.7.7
+      ruby setup.rb
+      Pop-Location
+      Pop-Location
+      gem --version
+    }
+    
