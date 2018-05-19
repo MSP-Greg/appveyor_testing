@@ -10,18 +10,18 @@ test_script:
 - echo off
 - set PATH=C:/ruby200-x64/bin;%base_path%
 - ps: >-
-    gem update --system
+    gem update --system ;
     if ((gem query -i bundler -v 1.16.2) -eq $False) {
       gem uninstall bundler -x
-      gem install bundler --no-document
+      gem install bundler -N
     }
 
 - set PATH=C:/ruby21-x64/bin;%base_path%
 - ps: >-
-    gem update --system
+    gem update --system ;
     if ((gem query -i bundler -v 1.16.2) -eq $False) {
       gem uninstall bundler -x
-      gem install bundler --no-document
+      gem install bundler -N
     }
 
 
