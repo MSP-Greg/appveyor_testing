@@ -12,7 +12,7 @@ test_script:
 - set PATH=C:/ruby200-x64/bin;%base_path%
 - ps: >-
     if ($env:ruby_version -lt '25') {
-      gem uninstall bundler
+      gem uninstall bundler -x
       Push-Location C:\
       gem fetch rubygems-update -v2.7.7
       gem unpack  rubygems-update-2.7.7.gem
@@ -27,7 +27,7 @@ test_script:
 - set PATH=C:/ruby21-x64/bin;%base_path%
 - ps: >-
     if ($env:ruby_version -lt '25') {
-      gem uninstall bundler
+      gem uninstall bundler -x
       Push-Location C:\
       gem fetch rubygems-update -v2.7.7
       gem unpack  rubygems-update-2.7.7.gem
@@ -42,7 +42,7 @@ test_script:
 - set PATH=C:/ruby22-x64/bin;%base_path%
 - ps: >-
     if ($env:ruby_version -lt '25') {
-      gem uninstall bundler
+      gem uninstall bundler -x
       Push-Location C:\
       gem fetch rubygems-update -v2.7.7
       gem unpack  rubygems-update-2.7.7.gem
@@ -57,7 +57,7 @@ test_script:
 - set PATH=C:/ruby23-x64/bin;%base_path%
 - ps: >-
     if ($env:ruby_version -lt '25') {
-      gem uninstall bundler
+      gem uninstall bundler -x
       Push-Location C:\
       gem fetch rubygems-update -v2.7.7
       gem unpack  rubygems-update-2.7.7.gem
@@ -72,7 +72,7 @@ test_script:
 - set PATH=C:/ruby24-x64/bin;%base_path%
 - ps: >-
     if ($env:ruby_version -lt '25') {
-      gem uninstall bundler
+      gem uninstall bundler -x
       Push-Location C:\
       gem fetch  rubygems-update -v2.7.7
       gem unpack rubygems-update-2.7.7.gem
