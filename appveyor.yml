@@ -9,6 +9,7 @@ test_script:
 
 - echo off
 - set PATH=C:/ruby200-x64/bin;%base_path%
+- xcopy C:\Greg\ruby25-x64\lib\ruby\2.5.0\rubygems C:\Greg\ruby200-x64\lib\ruby\2.0.0\rubygems /s /q /exclude:C:\Greg\ruby200-x64\lib\ruby\2.0.0\rubygems\defaults\operating_system.rb 
 - ps: >-
     if ((gem query -i bundler -v 1.16.2) -eq $False) {
       gem update bundler -N
