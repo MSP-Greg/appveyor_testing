@@ -9,8 +9,9 @@ test_script:
 
 - echo off
 - set PATH=C:/ruby200-x64/bin;%base_path%
-- xcopy C:\Greg\ruby26-x64\lib\ruby\gems\2.6.0\gems\bundler-1.16.2           C:\Greg\ruby26-x64\lib\ruby\gems\2.6.0\gems\bundler-1.16.2 /y /s /q 
-- copy  C:\Greg\ruby26-x64\lib\ruby\gems\2.6.0\specifications\bundler-1.16.2 C:\Greg\ruby26-x64\lib\ruby\gems\2.6.0\\specifications\bundler-1.16.2 /y /s /q
+- xcopy C:\Greg\ruby26-x64\lib\ruby\gems\2.6.0\gems\bundler-1.16.2           C:\Greg\ruby200-x64\lib\ruby\gems\2.0.0\gems\bundler-1.16.2 /y /s /q 
+- copy  C:\Greg\ruby26-x64\lib\ruby\gems\2.6.0\specifications\bundler-1.16.2 C:\Greg\ruby200-x64\lib\ruby\gems\2.0.0\\specifications\bundler-1.16.2 /y /s /q
+- gem list
 - ps: >-
     if ((gem query -i bundler -v 1.16.2) -eq $False) {
       gem update bundler -N
