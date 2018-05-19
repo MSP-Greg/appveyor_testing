@@ -10,13 +10,15 @@ test_script:
 - echo off
 - set PATH=C:/ruby200-x64/bin;%base_path%
 - ps: >-
+    gem update --system
     if ((gem query -i bundler -v 1.16.2) -eq $False) {
       gem uninstall bundler -x
-      gem install bundler --user-install --no-document
+      gem install bundler --no-document
     }
 
 - set PATH=C:/ruby21-x64/bin;%base_path%
 - ps: >-
+    gem update --system
     if ((gem query -i bundler -v 1.16.2) -eq $False) {
       gem uninstall bundler -x
       gem install bundler --no-document
@@ -25,6 +27,7 @@ test_script:
 
 - set PATH=C:/ruby22-x64/bin;%base_path%
 - ps: >-
+    gem update --system
     if ((gem query -i bundler -v 1.16.2) -eq $False) {
       gem uninstall bundler -x
       gem install bundler --no-document
@@ -33,6 +36,7 @@ test_script:
 
 - set PATH=C:/ruby23-x64/bin;%base_path%
 - ps: >-
+    gem update --system
     if ((gem query -i bundler -v 1.16.2) -eq $False) {
       gem uninstall bundler -x
       gem install bundler --no-document
