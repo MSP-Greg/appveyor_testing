@@ -1,0 +1,20 @@
+build: off
+deploy: off
+
+install:
+  - set dl_sf=https://sourceforge.net/projects/msys2/files/REPOS/MINGW/
+  - set ragel=ragel-6.10-1-any.pkg.tar.xz
+  - md av_bundle\pkgs
+
+  - appveyor DownloadFile %dl_sf%/x86_64/mingw-w64-x86_64-%ragel%     -FileName av_bundle\pkgs\mingw-w64-x86_64-%ragel%
+  - appveyor DownloadFile %dl_sf%/x86_64/mingw-w64-x86_64-%ragel%.sig -FileName av_bundle\pkgs\mingw-w64-x86_64-%ragel%.sig
+
+  - appveyor DownloadFile %dl_sf%/i686/mingw-w64-i686-%ragel%     -FileName av_bundle\pkgs\mingw-w64-i686-%ragel%
+  - appveyor DownloadFile %dl_sf%/i686/mingw-w64-i686-%ragel%.sig -FileName av_bundle\pkgs\mingw-w64-i686-%ragel%.sig
+
+  - C:\msys64\usr\bin\pacman -Udd --noconfirm --force  av_bundle/pkgs/mingw-w64-x86_64-%ragel% > nul
+  - C:\msys64\usr\bin\pacman -Udd --noconfirm --force  av_bundle/pkgs/mingw-w64-i686-%ragel%   > nul
+
+test_script:
+  - dir C:\msys64\mingw32\bin\*.exe
+  - dir C:\msys64\mingw64\bin\*.exe
