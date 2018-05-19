@@ -14,7 +14,7 @@ test_script:
     if ($env:ruby_version -lt '25') {
       gem uninstall bundler -x
       Push-Location C:\
-      gem fetch rubygems-update -v2.7.7
+      gem fetch rubygems-update -v 2.7.7
       gem unpack  rubygems-update-2.7.7.gem
       Push-Location C:\rubygems-update-2.7.7
       ruby setup.rb
@@ -29,7 +29,7 @@ test_script:
     if ($env:ruby_version -lt '25') {
       gem uninstall bundler -x
       Push-Location C:\
-      gem fetch rubygems-update -v2.7.7
+      gem fetch rubygems-update -v 2.7.7
       gem unpack  rubygems-update-2.7.7.gem
       Push-Location C:\rubygems-update-2.7.7
       ruby setup.rb
@@ -44,7 +44,7 @@ test_script:
     if ($env:ruby_version -lt '25') {
       gem uninstall bundler -x
       Push-Location C:\
-      gem fetch rubygems-update -v2.7.7
+      gem fetch rubygems-update -v 2.7.7
       gem unpack  rubygems-update-2.7.7.gem
       Push-Location C:\rubygems-update-2.7.7
       ruby setup.rb
@@ -59,7 +59,7 @@ test_script:
     if ($env:ruby_version -lt '25') {
       gem uninstall bundler -x
       Push-Location C:\
-      gem fetch rubygems-update -v2.7.7
+      gem fetch rubygems-update -v 2.7.7
       gem unpack  rubygems-update-2.7.7.gem
       Push-Location C:\rubygems-update-2.7.7
       ruby setup.rb
@@ -74,7 +74,7 @@ test_script:
     if ($env:ruby_version -lt '25') {
       gem uninstall bundler -x
       Push-Location C:\
-      gem fetch  rubygems-update -v2.7.7
+      gem fetch  rubygems-update -v 2.7.7
       gem unpack rubygems-update-2.7.7.gem
       Push-Location C:\rubygems-update-2.7.7
       ruby setup.rb
