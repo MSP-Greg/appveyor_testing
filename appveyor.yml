@@ -9,32 +9,58 @@ test_script:
 
 - echo off
 - set PATH=C:/ruby200-x64/bin;%base_path%
-- md C:\ruby200-x64\lib\ruby\gems\2.0.0\gems\bundler-1.16.2
-- xcopy C:\ruby_trunk\lib\ruby\gems\2.6.0\gems\bundler-1.16.2           C:\ruby200-x64\lib\ruby\gems\2.0.0\gems\bundler-1.16.2 /y /s /q /i
-- copy  C:\ruby_trunk\lib\ruby\gems\2.6.0\specifications\bundler-1.16.2.gemspec C:\ruby200-x64\lib\ruby\gems\2.0.0\specifications\
-- gem list -d
 - ps: >-
-    if ((gem query -i bundler -v 1.16.2) -eq $False) {
-      gem update bundler -N
+    if (($env:ruby_version -lt '25') {
+      gem uninstall bundler
+      Push-Location C:\
+      gem fetch rubygems-update -v2.7.7
+      gem unpack  rubygems-update-2.7.7.gem
+      Push-Location C:\rubygems-update-2.7.7
+      ruby setup.rb
+      Pop-Location
+      Pop-Location
+      gem --version
     }
+
 
 - set PATH=C:/ruby21-x64/bin;%base_path%
 - ps: >-
-    gem install rubygems-update ; update_rubygems ;
-    if ((gem query -i bundler -v 1.16.2) -eq $False) {
-      gem update bundler -N
+    if (($env:ruby_version -lt '25') {
+      gem uninstall bundler
+      Push-Location C:\
+      gem fetch rubygems-update -v2.7.7
+      gem unpack  rubygems-update-2.7.7.gem
+      Push-Location C:\rubygems-update-2.7.7
+      ruby setup.rb
+      Pop-Location
+      Pop-Location
+      gem --version
     }
-
 
 - set PATH=C:/ruby22-x64/bin;%base_path%
 - ps: >-
-    if ((gem query -i bundler -v 1.16.2) -eq $False) {
-      gem update bundler -N
+    if (($env:ruby_version -lt '25') {
+      gem uninstall bundler
+      Push-Location C:\
+      gem fetch rubygems-update -v2.7.7
+      gem unpack  rubygems-update-2.7.7.gem
+      Push-Location C:\rubygems-update-2.7.7
+      ruby setup.rb
+      Pop-Location
+      Pop-Location
+      gem --version
     }
-
 
 - set PATH=C:/ruby23-x64/bin;%base_path%
 - ps: >-
-    if ((gem query -i bundler -v 1.16.2) -eq $False) {
-      gem update bundler -N
+    if (($env:ruby_version -lt '25') {
+      gem uninstall bundler
+      Push-Location C:\
+      gem fetch rubygems-update -v2.7.7
+      gem unpack  rubygems-update-2.7.7.gem
+      Push-Location C:\rubygems-update-2.7.7
+      ruby setup.rb
+      Pop-Location
+      Pop-Location
+      gem --version
     }
