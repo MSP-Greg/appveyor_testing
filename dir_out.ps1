@@ -9,7 +9,8 @@ $dir_spec_dflt = "$dir_spec/default"
 
 ruby -v 2> $null
 Write-Host RubyGems (gem --version)
-bundle version 2> $null
+Write-Host "bundle  version -> $(bundle  version 2> $null)"
+Write-Host "bundler version -> $(bundler version 2> $null)"
 Write-Host "$($dash * 55) gem list"
 gem list
 Write-Host "$($dash * 55) Folder contents"

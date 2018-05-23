@@ -3,10 +3,12 @@
 New-Variable -Name dash -Value "$([char]0x2015)" -Scope Script -Option AllScope, ReadOnly
 New-Variable -Name dir_spec_cache -Value ""      -Scope Script -Option AllScope
 
-[string[]]$suffixes = '', '-x64'
-[string[]]$rubies = '200', '21', '22', '23', '24', '25'
-
+# ———————————————————————————————————————————————————————— New RubyGems version
 $gem_vers = '2.7.7'
+
+# ———————————————————————————————————————————————————————— Ruby versions
+[string[]]$suffixes = '', '-x64'
+[string[]]$rubies = '193', '200', '21', '22', '23', '24', '25'
 
 $base_path = 'C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Program Files/Git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/Windows/system32;C:/Windows;'
 
@@ -27,15 +29,24 @@ Pop-Location
 # ———————————————————————————————————————————————————————— Loop thru Ruby Versions
 foreach ($suf in $suffixes) {
   foreach ($vers in $rubies) {
+    if ($suf -eq '-x64' -And $vers -eq '193') { continue }
     $env:path = "C:/Ruby$vers$suf/bin;$base_path"
-
     Write-Host "`n$($dash * 65) Ruby$vers$suf Updating"
+
     Push-Location C:\rubygems-update-$gem_vers
     Remove-Item Env:\GEM_HOME 2> $null
     ruby -v setup.rb 2>&1>$null
     Remove-Item Env:\GEM_HOME 2> $null
     Pop-Location
+
     gem uninstall rubygems-update -x
+    
+    #————————————————————————————————————————————————————— copy bins to bundler
+    Push-Location "C:/Ruby$vers$suf/bin"
+    Copy-Item -Path ./bundle     -Destination ./bundler     -Force
+    Copy-Item -Path ./bundle.bat -Destination ./bundler.bat -Force
+    Pop-Location
+    
     Write-Host "Done with Rubygems Update"
     #————————————————————————————————————————————————————— minitest & rake
     gem install   minitest rake -N -f
@@ -45,6 +56,7 @@ foreach ($suf in $suffixes) {
 
 foreach ($suf in $suffixes) {
   foreach ($vers in $rubies) {
+    if ($suf -eq '-x64' -And $vers -eq '193') { continue }
     $env:path = "C:/Ruby$vers$suf/bin;$base_path"
     Write-Host "`n$($dash * 70) Ruby$vers$suf"
     ./dir_out.ps1
