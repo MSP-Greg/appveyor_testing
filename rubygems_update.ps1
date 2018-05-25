@@ -49,7 +49,7 @@ foreach ($suf in $suffixes) {
     
     Write-Host "Done with Rubygems Update"
     #————————————————————————————————————————————————————— minitest & rake
-    gem install   minitest rake -N -f
+    gem install minitest rake test-unit -N -f
     gem cleanup
   }
 }
