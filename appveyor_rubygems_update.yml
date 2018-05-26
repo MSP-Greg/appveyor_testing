@@ -1,6 +1,5 @@
----
 build: off
 deploy: off
 
 test_script:
-- ps: .\fat_binary.ps1
+- ps: .\rubygems_update.ps1
