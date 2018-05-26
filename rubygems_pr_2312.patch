@@ -1,0 +1,34 @@
+From 77436ef004c15601e6f02385409ed6ceb524ca92 Mon Sep 17 00:00:00 2001
+From: MSP-Greg <MSP-Greg@users.noreply.github.com>
+Date: Mon, 4 Jun 2018 18:20:04 -0500
+Subject: [PATCH] Fix for installing both 32 & 64 bit mingw binary gems in --user-install
+
+---
+ rubygems/specification.rb | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/rubygems/specification.rb b/rubygems/specification.rb
+index 2fe315f4f6..ff2187a9b5 100644
+--- a/rubygems/specification.rb
++++ b/rubygems/specification.rb
+@@ -782,8 +782,18 @@ def self.default_stubs pattern
+   private_class_method :default_stubs
+ 
+   def self.installed_stubs dirs, pattern
+-    map_stubs(dirs, pattern) do |path, base_dir, gems_dir|
+-      Gem::StubSpecification.gemspec_stub(path, base_dir, gems_dir)
++    # if mingw, derive platform from file name (loaded_from)
++    if RUBY_PLATFORM.match('mingw')
++      map_stubs(dirs, pattern) do |path, base_dir, gems_dir|
++        Gem::StubSpecification.gemspec_stub(path, base_dir, gems_dir)
++      end.select do |s|
++        (plat = s.loaded_from[/(x\d{2}-mingw32)\.gemspec/,1]) ?
++          Gem::Platform.match(plat) : true
++      end
++    else
++      map_stubs(dirs, pattern) do |path, base_dir, gems_dir|
++        Gem::StubSpecification.gemspec_stub(path, base_dir, gems_dir)
++      end
+     end
+   end
+   private_class_method :installed_stubs
