@@ -1,5 +1,5 @@
 [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
-$OutputEncoding = [Console]::OutputEncoding
+$OutputEncoding = [Text.UTF8Encoding]::UTF8
 
 Write-Host OutputEncoding
 $OutputEncoding
