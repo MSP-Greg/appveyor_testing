@@ -12,4 +12,4 @@ Write-Host `n[Console]::OutputEncoding
 
 Write-Host `n`n`n
 
-ruby.exe $PSScriptRoot\encoding.rb
+ruby.exe -Eutf-8:utf-8 $PSScriptRoot\encoding.rb
