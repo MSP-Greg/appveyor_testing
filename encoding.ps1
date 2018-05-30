@@ -1,15 +1,11 @@
-#$OutputEncoding = [System.Text.Encoding]::GetEncoding(65001)
-#[Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding(65001)
-
-#$OutputEncoding = [System.Text.Encoding]::UTF8
 #[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 Write-Host OutputEncoding
 $OutputEncoding
 
-Write-Host `n[Console]::OutputEncoding
+Write-Host [Console]::OutputEncoding
 [Console]::OutputEncoding
 
-Write-Host `n`n`n
+$enc = [Console]::OutputEncoding.HeaderName
 
-ruby.exe -Eutf-8:utf-8 $PSScriptRoot\encoding.rb
+ruby.exe $PSScriptRoot\encoding.rb $enc

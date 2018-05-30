@@ -6,13 +6,16 @@
 module TestEncoding
 class << self
   def run
-    #d = "\u2015".dup.force_encoding 'utf-8'
-    #d = "\u2015".dup.force_encoding 'windows-1252'
-    d = 151.chr.dup.force_encoding 'windows-1252'
+    enc = ARGV[0]
+puts "Encoding #{enc}"
+    case enc
+    when 'utf-8'
+      d = "\u2015".dup.force_encoding 'utf-8'
+    when 'Windows-1252'
+      d = 151.chr
+    end
     puts d * 30
     
-#    d = '─'
-#    puts d * 30
   end
 end
 end
