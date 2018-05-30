@@ -9,8 +9,8 @@ class << self
     d = "\u2015".dup.force_encoding 'utf-8'
     puts d * 30
     
-    d = '─'
-    puts d * 30
+#    d = '─'
+#    puts d * 30
   end
 end
 end
