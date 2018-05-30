@@ -9,3 +9,7 @@ $OutputEncoding
 
 Write-Host `n[Console]::OutputEncoding
 [Console]::OutputEncoding
+
+Write-Host `n`n`n
+
+ruby.exe $PSScriptRoot\encoding.rb

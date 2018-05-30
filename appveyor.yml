@@ -4,4 +4,7 @@ deploy: off
 
 test_script:
 #- ps: .\fat_binary.ps1
+
+ - set PATH=C:\Ruby25-x64;%PATH%
  - ps: .\encoding.ps1
+ 
