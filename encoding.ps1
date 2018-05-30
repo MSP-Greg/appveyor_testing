@@ -1,4 +1,5 @@
-$OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::UTF8
+[Console]::OutputEncoding = [System.Text.Encoding]::GetEncoding(65001)
+$OutputEncoding = [System.Text.Encoding]::GetEncoding(65001)
 
 Write-Host OutputEncoding
 $OutputEncoding
