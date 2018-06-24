@@ -51,9 +51,7 @@ Write-Host "$($dash * 63) Installing gdbm-1.10" -ForegroundColor Yellow
 $wc.DownloadFile("$dl_uri/$gdbm", "$pkgs\$gdbm")
 $wc.DownloadFile("$dl_uri/$gdbm" + ".sig", "$pkgs\$gdbm" + ".sig")
 
-if ( $(pacman.exe -Qq mingw-w64-x86_64-gdbm) ) {
-  pacman.exe -Rdd --noconfirm mingw-w64-x86_64-gdbm  1> $null
-}
+#pacman.exe -Rdd --noconfirm mingw-w64-x86_64-gdbm  1> $null
 pacman.exe -Udd --noconfirm $pkgs_u/$gdbm            1> $null
 if ($LastExitCode) {
   Write-Host "Error installing gdbm" -ForegroundColor Yellow
