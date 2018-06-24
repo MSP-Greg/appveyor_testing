@@ -22,7 +22,7 @@ $env:path = "$msys2\usr\bin;C:\ruby25-x64\bin;C:\Program Files\7-Zip;C:\Program 
 Write-Host "$($dash * 63) Updating MSYS2 / MinGW" -ForegroundColor Yellow
 $tools  = 'base-devel mingw-w64-x86_64-toolchain'
 $tools += ' mingw-w64-x86_64-gcc-libs mingw-w64-x86_64-gmp mingw-w64-x86_64-libffi mingw-w64-x86_64-zlib'
-iex "pacman.exe -Sy --noconfirm --needed $tools"
+iex "pacman.exe -Sy --noconfirm --needed $tools" 2> $null
 
 #—————————————————————————————————————————————————————————————————————————————— Add GPG key
 Write-Host "$($dash * 63) Adding GPG key" -ForegroundColor Yellow
