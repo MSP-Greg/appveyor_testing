@@ -27,7 +27,7 @@ iex "pacman.exe -Sy --noconfirm --needed $tools"
 #—————————————————————————————————————————————————————————————————————————————— Add GPG key
 Write-Host "$($dash * 63) Adding GPG key" -ForegroundColor Yellow
 $t1 = "pacman-key -r $key --keyserver $ks1 && pacman-key -f $key && pacman-key --lsign-key $key"
-bash.exe -lc $t1 1> $null
+bash.exe -lc $t1 2> $null
 $exit_code = $LastExitCode
 # below is for occasional key retrieve failure on Appveyor
 if ($exit_code) {
@@ -51,8 +51,10 @@ Write-Host "$($dash * 63) Installing gdbm-1.10" -ForegroundColor Yellow
 $wc.DownloadFile("$dl_uri/$gdbm", "$pkgs\$gdbm")
 $wc.DownloadFile("$dl_uri/$gdbm" + ".sig", "$pkgs\$gdbm" + ".sig")
 
-pacman -Rdd --noconfirm mingw-w64-x86_64-gdbm  1> $null
-pacman -Udd --noconfirm $pkgs_u/$gdbm          1> $null
+if ( $(pacman.exe -Q mingw-w64-x86_64-gdbm) ) {
+  pacman.exe -Rdd --noconfirm mingw-w64-x86_64-gdbm  1> $null
+}
+pacman.exe -Udd --noconfirm $pkgs_u/$gdbm            1> $null
 if ($LastExitCode) {
   Write-Host "Error installing gdbm" -ForegroundColor Yellow
   exit 1
@@ -62,8 +64,8 @@ Write-Host "$($dash * 63) Installing openssl-1.1.0" -ForegroundColor Yellow
 $wc.DownloadFile("$dl_uri/$openssl", "$pkgs\$openssl")
 $wc.DownloadFile("$dl_uri/$openssl" + ".sig", "$pkgs\$openssl" + ".sig")
 
-pacman -Rdd --noconfirm mingw-w64-x86_64-openssl 1> $null
-pacman -Udd --noconfirm $pkgs_u/$openssl         1> $null
+pacman.exe -Rdd --noconfirm mingw-w64-x86_64-openssl 1> $null
+pacman.exe -Udd --noconfirm $pkgs_u/$openssl         1> $null
 if ($LastExitCode) {
   Write-Host "Error installing openssl" -ForegroundColor Yellow
   exit 1
