@@ -1,73 +1,59 @@
-$dash  = "$([char]0x2015)"
-$msys2 = 'C:\msys64'
+$orig_path = $env:path
 
-$env:path = "$msys2\usr\bin;C:\ruby25-x64\bin;C:\Program Files\7-Zip;C:\Program Files\AppVeyor\BuildAgent;C:\Program Files\Git\cmd;C:\Windows\system32;C:\Program Files;C:\Windows"
+$key = 'D688DA4A77D8FA18'
+$ks1 = 'hkp://pool.sks-keyservers.net'
+$ks2 = 'hkp://pgp.mit.edu'
 
-#—————————————————————————————————————————————————————————————————————————————— Update MSYS2
-Write-Host "$($dash * 63) Updating MSYS2 / MinGW" -ForegroundColor Yellow
-
-Write-Host "pacman.exe -Syu --noconfirm --noprogressbar" -ForegroundColor Yellow
-pacman.exe -Syu --noconfirm --noprogressbar
-
-Write-Host "`npacman.exe -Su --noconfirm --noprogressbar" -ForegroundColor Yellow
-pacman.exe -Su --noconfirm --noprogressbar
-
-Write-Host "`nThe following two commands may not be needed, but I had issues" -ForegroundColor Yellow
-Write-Host "retrieving a new key without them..." -ForegroundColor Yellow
-
-$t1 = "pacman-key --init"
-Write-Host "`nbash.exe -lc $t1" -ForegroundColor Yellow
-bash.exe -lc $t1
-
-$t1 = "pacman-key -l"
-Write-Host "bash.exe -lc $t1" -ForegroundColor Yellow
-bash.exe -lc $t1
-
-Write-Host "Clean cache & database" -ForegroundColor Yellow
-Write-Host "pacman.exe -Sc  --noconfirm" -ForegroundColor Yellow
-pacman.exe -Sc  --noconfirm
-
-#——————————————————————————————————————————————————————————————————————————————
-#                ALL BELOW CODE IS JUST INFORMATIONAL & TESTING
-
-#——————————————————————————————————————————————————————————————————————————————  MSYS2 Info
-Write-Host "`n$($dash * 80)`nCached Packages" -ForegroundColor Yellow
-Write-Host "dir C:\msys64\var\cache\pacman\pkg (cached packages)" -ForegroundColor Yellow
-dir C:\msys64\var\cache\pacman\pkg | Format-Table -Property Name
-
-Write-Host "`n$($dash * 80)`nInstalled Packages" -ForegroundColor Yellow
-
-ruby.exe pacman_query.rb
-
-Write-Host "`n$($dash * 80)`n" -ForegroundColor Yellow
-
-#—————————————————————————————————————————————————————————————————————————————— Add GPG key
-$key = '77D8FA18'
-$ks1 = 'hkp://na.pool.sks-keyservers.net'
-$ks2 = 'hkp://pgp.mit.edu/'
-
-$gdbm    = 'mingw-w64-x86_64-gdbm-1.10-2-any.pkg.tar.xz'
+$msys2   = 'C:\msys64'
 $openssl = 'mingw-w64-x86_64-openssl-1.1.0.h-1-any.pkg.tar.xz'
 $dl_uri  = 'https://dl.bintray.com/msp-greg/ruby_trunk'
 
 $wc  = $(New-Object System.Net.WebClient)
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
 
+$dash = "$([char]0x2015)"
 $pkgs = "C:\pkgs"
 $pkgs_u = $pkgs.replace('\', '/')
 
+$env:path = "$msys2\usr\bin;C:\ruby25-x64\bin;C:\Program Files\7-Zip;C:\Program Files\AppVeyor\BuildAgent;C:\Program Files\Git\cmd;C:\Windows\system32;C:\Program Files;C:\Windows"
+
+$pre = "mingw-w64-x86_64-"
+#—————————————————————————————————————————————————————————————————————————————— Update MSYS2
+Write-Host "$($dash * 63) Updating MSYS2 / MinGW base base-devel" -ForegroundColor Yellow
+pacman.exe -Sy --noconfirm --needed --noprogressbar base base-devel 2> $null
+
+Write-Host "$($dash * 63) Updating MSYS2 / MinGW toolchain `& ruby depends" -ForegroundColor Yellow
+$tools =  "___toolchain ___gcc-libs ___gdbm ___gmp ___libffi ___readline ___zlib".replace('___', $pre)
+pacman.exe -S --noconfirm --needed --noprogressbar $tools.split(' ') 2> $null
+
+#—————————————————————————————————————————————————————————————————————————————— Update gnupg
+Write-Host "$($dash * 63) Updating gnupg dependencies" -ForegroundColor Yellow
+#pacman.exe -S --noconfirm --needed --noprogressbar brotli ca-certificates glib2 gmp heimdal-libs icu libasprintf libcrypt
+#pacman.exe -S --noconfirm --needed --noprogressbar libdb libedit libexpat libffi libgettextpo libhogweed libidn2 liblzma
+pacman.exe -S --noconfirm --needed --noprogressbar libmetalink libnettle libnghttp2 libopenssl libp11-kit libpcre libpsl
+#pacman.exe -S --noconfirm --needed --noprogressbar libssh2 libtasn1 libunistring libxml2 libxslt openssl p11-kit 
+
+Write-Host "$($dash * 63) Updating gnupg package dependencies" -ForegroundColor Yellow
+# below are listed gnupg dependencies
+pacman.exe -S --noconfirm --needed --noprogressbar bzip2 libassuan libbz2 libcurl libgcrypt libgnutls libgpg-error libiconv
+pacman.exe -S --noconfirm --needed --noprogressbar libintl libksba libnpth libreadline libsqlite nettle pinentry zlib
+
+Write-Host "$($dash * 63) Updating gnupg" -ForegroundColor Yellow
+pacman.exe -S --noconfirm --needed --noprogressbar gnupg 2> $null
+
+#—————————————————————————————————————————————————————————————————————————————— Add GPG key
 Write-Host "$($dash * 63) Adding GPG key" -ForegroundColor Yellow
 Write-Host "try retrieving & signing key" -ForegroundColor Yellow
 
-$t1 = "pacman-key -r $key --keyserver $ks1 && pacman-key -f $key && pacman-key --lsign-key $key"
-Appveyor-Retry bash.exe -lc $t1 2> $null
+$t1 = "`"pacman-key -r $key --keyserver $ks1 && pacman-key -f $key && pacman-key --lsign-key $key`""
+Appveyor-Retry bash.exe -c $t1 2> $null
 # below is for occasional key retrieve failure on Appveyor
-if ($LastExitCode -and $LastExitCode -gt 0) {
+if ($LastExitCode -and $LastExitCode -ne 0) {
   Write-Host GPG Key Lookup failed from $ks1 -ForegroundColor Yellow
   # try another keyserver
-  $t1 = "pacman-key -r $key --keyserver $ks2 && pacman-key -f $key && pacman-key --lsign-key $key"
-  Appveyor-Retry bash.exe -lc $t1 1> $null
-  if ($LastExitCode -and $LastExitCode -gt 0) {
+  $t1 = "`"pacman-key -r $key --keyserver $ks2 && pacman-key -f $key && pacman-key --lsign-key $key`""
+  Appveyor-Retry bash.exe -c $t1 1> $null
+  if ($LastExitCode -and $LastExitCode -ne 0) {
     Write-Host GPG Key Lookup failed from $ks2 -ForegroundColor Yellow
     Update-AppveyorBuild -Message "keyserver retrieval failed"
     exit $LastExitCode
@@ -78,19 +64,8 @@ if ( !(Test-Path -Path $pkgs -PathType Container) ) {
   New-Item -Path $pkgs -ItemType Directory 1> $null
 }
 
-#—————————————————————————————————————————————————————————————————————————————— Add gdbm & openssl
-Write-Host "$($dash * 63) Try installing gdbm & openssl" -ForegroundColor Yellow
-Write-Host "Installing $gdbm"
-$wc.DownloadFile("$dl_uri/$gdbm", "$pkgs\$gdbm")
-$wc.DownloadFile("$dl_uri/$gdbm" + ".sig", "$pkgs\$gdbm" + ".sig")
-
-#pacman.exe -Rdd --noconfirm mingw-w64-x86_64-gdbm  1> $null
-pacman.exe -Udd --noconfirm $pkgs_u/$gdbm            1> $null
-if ($LastExitCode) {
-  Write-Host "Error installing gdbm" -ForegroundColor Yellow
-  exit 1
-} else { Write-Host "Finished" }
-
+#—————————————————————————————————————————————————————————————————————————————— Add openssl
+Write-Host "$($dash * 63) Install custom openssl" -ForegroundColor Yellow
 Write-Host "Installing $openssl"
 $wc.DownloadFile("$dl_uri/$openssl", "$pkgs\$openssl")
 $wc.DownloadFile("$dl_uri/$openssl" + ".sig", "$pkgs\$openssl" + ".sig")
@@ -103,6 +78,6 @@ if ($LastExitCode) {
 } else { Write-Host "Finished" }
 
 Write-Host "$($dash * 63) MinGW Package Check" -ForegroundColor Yellow
-bash -lc "pacman -Qs x86_64\.\+\(gcc\|gdbm\|openssl\) | sed -n '/^local/p' | sed 's/^local\///' | sed 's/ (.\+$//'"
-
-Write-Host "`n$($dash * 80)`n" -ForegroundColor Yellow
+bash -c "pacman -Qs x86_64\.\+\(gcc\|gdbm\|openssl\) | sed -n '/^local/p' | sed 's/^local\///' | sed 's/ (.\+$//'"
+Write-Host "$($dash * 83)" -ForegroundColor Yellow
+$env:path = $orig_path
