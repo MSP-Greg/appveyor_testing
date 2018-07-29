@@ -30,13 +30,13 @@ pacman.exe -S --noconfirm --needed --noprogressbar $tools.split(' ') 2> $null
 Write-Host "$($dash * 63) Updating gnupg dependencies" -ForegroundColor Yellow
 #pacman.exe -S --noconfirm --needed --noprogressbar brotli ca-certificates glib2 gmp heimdal-libs icu libasprintf libcrypt
 #pacman.exe -S --noconfirm --needed --noprogressbar libdb libedit libexpat libffi libgettextpo libhogweed libidn2 liblzma
-pacman.exe -S --noconfirm --needed --noprogressbar libmetalink libnettle libnghttp2 libopenssl libp11-kit libpcre libpsl
+pacman.exe -S --noconfirm --needed --noprogressbar libmetalink libnettle libnghttp2 libopenssl libp11-kit libpcre libpsl 2> $null
 #pacman.exe -S --noconfirm --needed --noprogressbar libssh2 libtasn1 libunistring libxml2 libxslt openssl p11-kit 
 
 Write-Host "$($dash * 63) Updating gnupg package dependencies" -ForegroundColor Yellow
 # below are listed gnupg dependencies
-pacman.exe -S --noconfirm --needed --noprogressbar bzip2 libassuan libbz2 libcurl libgcrypt libgnutls libgpg-error libiconv
-pacman.exe -S --noconfirm --needed --noprogressbar libintl libksba libnpth libreadline libsqlite nettle pinentry zlib
+pacman.exe -S --noconfirm --needed --noprogressbar bzip2 libassuan libbz2 libcurl libgcrypt libgnutls libgpg-error libiconv 2> $null
+pacman.exe -S --noconfirm --needed --noprogressbar libintl libksba libnpth libreadline libsqlite nettle pinentry zlib 2> $null
 
 Write-Host "$($dash * 63) Updating gnupg" -ForegroundColor Yellow
 pacman.exe -S --noconfirm --needed --noprogressbar gnupg 2> $null
