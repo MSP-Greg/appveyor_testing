@@ -106,10 +106,13 @@ if ( !(Test-Path -Path $pkgs -PathType Container) ) {
 Write-Host "$($dash * 63) Install custom openssl" -ForegroundColor Yellow
 Write-Host "Installing $openssl"
 
-Write-Host "URI $dl_uri/$openssl?all=true&pr=false"
+$url = "$dl_uri/$openssl" + "?all=true&pr=false"
+
+Write-Host URI $url
 Write-Host "$pkgs\$openssl"
 
-$wc.DownloadFile("$dl_uri/$openssl?all=true&pr=false", "$pkgs\$openssl")
+
+$wc.DownloadFile($uri, "$pkgs\$openssl")
 $wc.DownloadFile("$dl_uri/$openssl" + ".sig", "$pkgs\$openssl" + ".sig")
 
 pacman.exe -Rdd --noconfirm mingw-w64-x86_64-openssl 1> $null
