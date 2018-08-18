@@ -106,11 +106,10 @@ if ( !(Test-Path -Path $pkgs -PathType Container) ) {
 Write-Host "$($dash * 63) Install custom openssl" -ForegroundColor Yellow
 Write-Host "Installing $openssl"
 
-$url = "$dl_uri/$openssl" + "?all=true&pr=false"
+$uri = "$dl_uri/$openssl" + "?all=true&pr=false"
 
-Write-Host URI $url
+Write-Host URI $uri
 Write-Host "$pkgs\$openssl"
-
 
 $wc.DownloadFile($uri, "$pkgs\$openssl")
 $wc.DownloadFile("$dl_uri/$openssl" + ".sig", "$pkgs\$openssl" + ".sig")
