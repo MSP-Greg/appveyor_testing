@@ -1,0 +1,37 @@
+---
+build: off
+deploy: off
+
+test_script:
+  # Remove any ENV settings related to OpenSSL-Win
+  - set SSL_CERT_DIR=
+  - set SSL_CERT_FILE=
+  - set OPENSSL_CONF=
+  - set OPENSSL_DIR=
+
+  # Set up minimum path required
+  - mklink /d C:\git "C:\Program Files\Git"
+  - set base_path=C:/Program Files/7-Zip;C:/Program Files/AppVeyor/BuildAgent;C:/Git/cmd;C:/Program Files (x86)/GNU/GnuPG/pub;C:/Windows/system32;C:/Windows;C:/Program Files
+  - md C:\pkgs
+
+  - appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/6kllld7w5y4bdgc9/artifacts/ruby_trunk.7z -FileName C:/pkgs/ruby_trunk_730.7z
+  - 7z x C:/pkgs/ruby_trunk_730.7z -oC:/Ruby26-x64_730
+
+  - appveyor DownloadFile https://ci.appveyor.com/api/buildjobs/m7qo0nehkxy4nhc0/artifacts/ruby_trunk.7z -FileName C:/pkgs/ruby_trunk_820.7z
+  - 7z x C:/pkgs/ruby_trunk_820.7z -oC:/Ruby26-x64_820
+
+  
+  - cd bootstraptest
+  - rem
+  - rem ----------------------------------------------- Run build with gcc 7.3.0
+  - set PATH=C:/Ruby26-x64_730/bin;%BASE_PATH%
+  - ruby -e "puts RbConfig::CONFIG['CC_VERSION_MESSAGE'][/\A[^\n]+/], Signal.list"
+  - rem
+  - ruby bootstrap_thread.rb
+
+  - rem
+  - rem ----------------------------------------------- Run build with gcc 8.2.0
+  - set PATH=C:/Ruby26-x64_820/bin;%BASE_PATH%
+  - ruby -e "puts RbConfig::CONFIG['CC_VERSION_MESSAGE'][/\A[^\n]+/], Signal.list"
+  - rem
+  - ruby bootstrap_thread.rb
