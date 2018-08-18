@@ -6,7 +6,7 @@ $ks2 = 'hkp://pgp.mit.edu'
 
 $msys2   = 'C:\msys64'
 $openssl = 'mingw-w64-x86_64-openssl-1.1.0.i-1-any.pkg.tar.xz'
-$dl_uri  = 'https://ci.appveyor.com/project/MSP-Greg/ruby-makepkg-mingw/artifacts'
+$dl_uri  = 'https://ci.appveyor.com/api/projects/MSP-Greg/ruby-makepkg-mingw/artifacts'
 
 $wc  = $(New-Object System.Net.WebClient)
 [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
@@ -95,14 +95,20 @@ if ($LastExitCode -and $LastExitCode -ne 0) {
     exit $LastExitCode
   } else { Write-Host GPG Key Lookup succeeded from $ks2 }
 }   else { Write-Host GPG Key Lookup succeeded from $ks1 }
+#>
 
 if ( !(Test-Path -Path $pkgs -PathType Container) ) {
   New-Item -Path $pkgs -ItemType Directory 1> $null
 }
-#>
+
 #—————————————————————————————————————————————————————————————————————————————— Add openssl
+
 Write-Host "$($dash * 63) Install custom openssl" -ForegroundColor Yellow
 Write-Host "Installing $openssl"
+
+Write-Host "URI $dl_uri/$openssl?all=true&pr=false"
+Write-Host "$pkgs\$openssl"
+
 $wc.DownloadFile("$dl_uri/$openssl?all=true&pr=false", "$pkgs\$openssl")
 $wc.DownloadFile("$dl_uri/$openssl" + ".sig", "$pkgs\$openssl" + ".sig")
 
