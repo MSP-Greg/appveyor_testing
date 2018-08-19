@@ -4,6 +4,5 @@ deploy: off
 
 test_script:
   - ps: (Get-Item -Path 'C:\Windows\System32\libssl-1_1-x64.dll').VersionInfo | Format-List -Force
-(get-item -Path 'C:\Windows\System32\libcrypto-1_1-x64.dll').VersionInfo | Format-List -Force
   - ps: (Get-Item -Path 'C:\Windows\System32\libcrypto-1_1-x64.dll').VersionInfo | Format-List -Force
   # - ps: .\trunk_msys2.ps1
