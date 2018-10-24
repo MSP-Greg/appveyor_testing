@@ -11,4 +11,4 @@ environment:
 build_script:
   - echo set
   - set
-  - ps: Write-Host "`nGet-Childitem Env:" ; Get-Childitem Env:
+  - ps: $t = "Env:" ; Write-Host "`nGet-Childitem Env:" ; Get-Childitem $t
