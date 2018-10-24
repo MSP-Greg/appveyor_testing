@@ -4,10 +4,11 @@ deploy: off
 
 environment:
   matrix:
-    # to reduce time for finishing all jobs, run the slowest msys2 build first.
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
 
-test_script:
-  - ps: Get-Childitem Env:
+build_script:
+  - echo set
+  - set
+  - ps: Write-Host "`nGet-Childitem Env:" ; Get-Childitem Env:
