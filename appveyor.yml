@@ -2,7 +2,12 @@
 build: off
 deploy: off
 
+environment:
+  matrix:
+    # to reduce time for finishing all jobs, run the slowest msys2 build first.
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
 test_script:
-  - ps: (Get-Item -Path 'C:\Windows\System32\libssl-1_1-x64.dll').VersionInfo | Format-List -Force
-  - ps: (Get-Item -Path 'C:\Windows\System32\libcrypto-1_1-x64.dll').VersionInfo | Format-List -Force
-  # - ps: .\trunk_msys2.ps1
+  - ps: Get-Childitem Env:

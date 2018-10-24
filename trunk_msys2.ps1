@@ -112,7 +112,7 @@ Write-Host URI $uri
 Write-Host "$pkgs\$openssl"
 
 $wc.DownloadFile($uri, "$pkgs\$openssl")
-$wc.DownloadFile("$dl_uri/$openssl" + ".sig", "$pkgs\$openssl" + ".sig")
+#$wc.DownloadFile("$dl_uri/$openssl" + ".sig", "$pkgs\$openssl" + ".sig")
 
 pacman.exe -Rdd --noconfirm mingw-w64-x86_64-openssl 1> $null
 pacman.exe -Udd --noconfirm $pkgs_u/$openssl         1> $null
