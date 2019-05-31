@@ -3,11 +3,12 @@ build: off
 deploy: off
 
 image:
-- Visual Studio 2013
-- Visual Studio 2015
 - Visual Studio 2017
 
 build_script:
   - echo set
   - set
+  - SET PATH=C:\msys64\usr\bin;%PATH%
+  - pacman -Syuu --noconfirm --noprogressbar --nodeps
+  - pacman -Suu  --noconfirm --noprogressbar --nodeps
   - ps: ./print_env.ps1
